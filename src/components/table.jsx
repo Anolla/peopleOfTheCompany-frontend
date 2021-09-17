@@ -4,6 +4,7 @@ import ListComponent from "./list";
 import Table from "react-bootstrap/Table";
 import { paginate } from "./pagination";
 import PaginationComponent from "./pagination";
+import SearchBox from "./searchBox";
 
 class TableComponent extends React.Component {
   state = {
@@ -12,6 +13,7 @@ class TableComponent extends React.Component {
     pageSize: 5,
     currentPage: 1,
     selectedDepartment: "",
+    searchQuery: "",
   };
 
   async componentDidMount() {
@@ -37,6 +39,14 @@ class TableComponent extends React.Component {
     this.setState({ currentPage: page });
   };
 
+  handleSearch = (query) => {
+    this.setState({
+      searchQuery: query,
+      selectedDepartment: null,
+      currentPage: 1,
+    });
+  };
+
   render() {
     let {
       employees: allEmployees,
@@ -44,9 +54,18 @@ class TableComponent extends React.Component {
       selectedDepartment,
       currentPage,
       pageSize,
+      searchQuery,
     } = this.state;
 
+    
+
     let filtered = allEmployees;
+
+    if (searchQuery )
+    filtered = allEmployees.filter((m) => {
+      return m.fullName.toLowerCase().startsWith(searchQuery.toLowerCase());
+    });
+
     if (selectedDepartment) {
       filtered = allEmployees.filter(
         (m) => m.department.name === selectedDepartment
@@ -62,6 +81,7 @@ class TableComponent extends React.Component {
           selectedItem={selectedDepartment}
           onItemSelect={this.handleDepartmentSelect}
         />
+        <SearchBox value={searchQuery} onChange={this.handleSearch} />
         <Table striped bordered hover>
           <thead>
             <tr>
