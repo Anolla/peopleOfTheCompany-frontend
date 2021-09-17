@@ -16,7 +16,7 @@ export default function PaginationComponent(props) {
         disabled={currentPage === pagesCount ? true : false}
       />
       <p style={{ margin: "4px" }}>
-        {currentPage} out of {pagesCount}
+        {currentPage} out of {pagesCount} pages
       </p>
     </Pagination>
   );

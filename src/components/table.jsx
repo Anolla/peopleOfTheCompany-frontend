@@ -22,10 +22,10 @@ class TableComponent extends React.Component {
 
   async componentDidMount() {
     let { data: employees } = await axios.get(
-      "http://localhost:3005/employees"
+      "https://people-of-the-company.herokuapp.com/employees"
     );
     let { data: departments } = await axios.get(
-      "http://localhost:3005/departments"
+      "https://people-of-the-company.herokuapp.com/departments"
     );
 
     this.setState({ employees, departments });
@@ -40,7 +40,7 @@ class TableComponent extends React.Component {
   };
 
   handlePageChange = (page) => {
- this.setState({ currentPage: page });
+    this.setState({ currentPage: page });
   };
 
   handleSearch = (query) => {
