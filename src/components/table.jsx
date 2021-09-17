@@ -5,6 +5,9 @@ import Table from "react-bootstrap/Table";
 import { paginate } from "./pagination";
 import PaginationComponent from "./pagination";
 import SearchBox from "./searchBox";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 class TableComponent extends React.Component {
   state = {
@@ -14,14 +17,15 @@ class TableComponent extends React.Component {
     currentPage: 1,
     selectedDepartment: "",
     searchQuery: "",
+    searchBy: "fullName",
   };
 
   async componentDidMount() {
     let { data: employees } = await axios.get(
-      "https://people-of-the-company.herokuapp.com/employees"
+      "http://localhost:3005/employees"
     );
     let { data: departments } = await axios.get(
-      "https://people-of-the-company.herokuapp.com/departments"
+      "http://localhost:3005/departments"
     );
 
     this.setState({ employees, departments });
@@ -36,14 +40,20 @@ class TableComponent extends React.Component {
   };
 
   handlePageChange = (page) => {
-    this.setState({ currentPage: page });
+ this.setState({ currentPage: page });
   };
 
   handleSearch = (query) => {
     this.setState({
       searchQuery: query,
-      selectedDepartment: null,
+      selectedDepartment: "",
       currentPage: 1,
+    });
+  };
+
+  handleSearchBy = (searchBy) => {
+    this.setState({
+      searchBy,
     });
   };
 
@@ -55,16 +65,15 @@ class TableComponent extends React.Component {
       currentPage,
       pageSize,
       searchQuery,
+      searchBy,
     } = this.state;
-
-    
 
     let filtered = allEmployees;
 
-    if (searchQuery )
-    filtered = allEmployees.filter((m) => {
-      return m.fullName.toLowerCase().startsWith(searchQuery.toLowerCase());
-    });
+    if (searchQuery && searchBy)
+      filtered = allEmployees.filter((m) => {
+        return m[searchBy].toLowerCase().startsWith(searchQuery.toLowerCase());
+      });
 
     if (selectedDepartment) {
       filtered = allEmployees.filter(
@@ -75,39 +84,50 @@ class TableComponent extends React.Component {
     const employees = paginate(filtered, currentPage, pageSize);
 
     return (
-      <React.Fragment>
-        <ListComponent
-          items={departments}
-          selectedItem={selectedDepartment}
-          onItemSelect={this.handleDepartmentSelect}
-        />
-        <SearchBox value={searchQuery} onChange={this.handleSearch} />
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Department</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((employee) => {
-              return (
-                <tr key={employee.id}>
-                  <td>{employee.fullName}</td>
-                  <td>{employee.email}</td>
-                  <td>{employee.department.name}</td>
+      <Container>
+        <Row>
+          <Col md={4}>
+            <ListComponent
+              items={departments}
+              selectedItem={selectedDepartment}
+              onItemSelect={this.handleDepartmentSelect}
+            />
+          </Col>
+          <Col md={8}>
+            <SearchBox
+              value={searchQuery}
+              onChange={this.handleSearch}
+              onSearchByChange={this.handleSearchBy}
+            />
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Department</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-        <PaginationComponent
-          itemsCount={filtered.length}
-          pageSize={pageSize}
-          onPageChange={this.handlePageChange}
-        />
-      </React.Fragment>
+              </thead>
+              <tbody>
+                {employees.map((employee) => {
+                  return (
+                    <tr key={employee.id}>
+                      <td>{employee.fullName}</td>
+                      <td>{employee.email}</td>
+                      <td>{employee.department.name}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+            <PaginationComponent
+              itemsCount={filtered.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={this.handlePageChange}
+            />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

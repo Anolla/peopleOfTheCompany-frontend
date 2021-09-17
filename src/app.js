@@ -1,10 +1,12 @@
 import React from "react";
 import TableComponent from "./components/table";
-import "./app.css";
+import NavBarComponent from "./components/navBar";
+// import "./app.css";
 
 function App() {
   return (
     <React.Fragment>
+      <NavBarComponent />
       <TableComponent />
     </React.Fragment>
   );
