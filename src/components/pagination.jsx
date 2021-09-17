@@ -15,7 +15,6 @@ export default function PaginationComponent(props) {
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === pagesCount ? true : false}
       />
-      {}
       <p style={{ margin: "4px" }}>
         {currentPage} out of {pagesCount}
       </p>
