@@ -1,13 +1,14 @@
 import React from "react";
 import TableComponent from "./components/table";
 import NavBarComponent from "./components/navBar";
-// import "./app.css";
+import Footer from "./components/footer";
 
 function App() {
   return (
     <React.Fragment>
       <NavBarComponent />
       <TableComponent />
+      <Footer />
     </React.Fragment>
   );
 }
