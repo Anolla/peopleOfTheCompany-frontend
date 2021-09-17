@@ -46,7 +46,14 @@ class TableComponent extends React.Component {
       pageSize,
     } = this.state;
 
-    const employees = paginate(allEmployees, currentPage, pageSize);
+    let filtered = allEmployees;
+    if (selectedDepartment) {
+      filtered = allEmployees.filter(
+        (m) => m.department.name === selectedDepartment
+      );
+    }
+
+    const employees = paginate(filtered, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -76,9 +83,8 @@ class TableComponent extends React.Component {
           </tbody>
         </Table>
         <PaginationComponent
-         itemsCount={allEmployees.length}
+          itemsCount={filtered.length}
           pageSize={pageSize}
-          currentPage={currentPage}
           onPageChange={this.handlePageChange}
         />
       </React.Fragment>
