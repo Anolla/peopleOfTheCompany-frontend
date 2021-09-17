@@ -1,9 +1,13 @@
+import React from "react";
 import TableComponent from "./components/table";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./app.css";
 
 function App() {
-  return <TableComponent />;
+  return (
+    <React.Fragment>
+      <TableComponent />
+    </React.Fragment>
+  );
 }
 
 export default App;

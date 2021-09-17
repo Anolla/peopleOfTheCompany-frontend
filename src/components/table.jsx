@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import Table from "react-bootstrap/Table";
 import ListComponent from "./list";
+import Table from "react-bootstrap/Table";
 
 class TableComponent extends React.Component {
   state = {
@@ -25,11 +25,7 @@ class TableComponent extends React.Component {
 
     return (
       <React.Fragment>
-        <ListComponent
-          items={departments}
-          onItemSelect={this.handleDepartmentSelect}
-          selectedItem={selectedDepartment}
-        />
+        <ListComponent items={departments} selectedItem={selectedDepartment} />
         <Table striped bordered hover>
           <thead>
             <tr>
