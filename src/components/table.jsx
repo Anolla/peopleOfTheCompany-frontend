@@ -8,6 +8,8 @@ import SearchBox from "./searchBox";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class TableComponent extends React.Component {
   state = {
@@ -29,6 +31,11 @@ class TableComponent extends React.Component {
     );
 
     this.setState({ employees, departments });
+    if (
+      this.state.employees.length === 0 &&
+      this.state.departments.length === 0
+    )
+      toast.error("No data to display");
   }
 
   handleDepartmentSelect = (department) => {
@@ -69,7 +76,6 @@ class TableComponent extends React.Component {
     } = this.state;
 
     let filtered = allEmployees;
-
     if (searchQuery && searchBy)
       filtered = allEmployees.filter((m) => {
         return m[searchBy].toLowerCase().startsWith(searchQuery.toLowerCase());
@@ -85,6 +91,7 @@ class TableComponent extends React.Component {
 
     return (
       <Container>
+        <ToastContainer />
         <Row>
           <Col md={4}>
             <ListComponent
