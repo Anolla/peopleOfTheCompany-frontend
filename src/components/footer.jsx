@@ -8,7 +8,7 @@ const Footer = () => {
         className="text-center p-4"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
       >
-        © 2021 Copyright reserved
+        © 2021 All rights reserved to Anolla Haddad
       </div>
     </footer>
   );
